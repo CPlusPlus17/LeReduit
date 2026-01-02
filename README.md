@@ -1,28 +1,30 @@
 # 🏔️ Le Réduit
 
-> **Autarker Rako-Server: Solar, LoRa, WLAN & SSD. Deine digitale Festung für Kommunikation & Daten im Notfall.**
+> **Autarker Rako-Server: Solar, LoRa, WLAN & SSD. Deine digitale Festung für Kommunikation & Lagebild im Notfall.**
 
 ![Project Status](https://img.shields.io/badge/Status-In%20Construction-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Solar Power](https://img.shields.io/badge/Power-Solar%20%2B%20100Ah-green)
+![Orchestration](https://img.shields.io/badge/Orchestration-k3s%20%2F%20Helm-blueviolet)
 
 ## 📖 Über das Projekt
 
 **Le Réduit** ist eine Hommage an die Schweizer Réduit-Strategie: Eine letzte, sichere Bastion, wenn rundherum alles ausfällt.
 
-Dieses Projekt dokumentiert den Bau einer tragbaren, energieautarken IT-Infrastruktur in einer genormten Eurobox (Rako-Kiste). Das System dient als:
-1.  **Kommunikations-Knoten:** LoRa Mesh (Meshtastic) und WLAN-Access-Point.
-2.  **Wissens-Arche:** Offline-Verfügbarkeit von Wikipedia, OpenStreetMap und technischen Handbüchern.
-3.  **Notstrom-Versorgung:** Massive 100Ah Batteriekapazität für tagelangen Betrieb ohne Sonne.
+Dieses Projekt dokumentiert den Bau einer tragbaren, energieautarken IT-Infrastruktur in einer genormten Eurobox (Rako-Kiste). Das System transformiert einen Raspberry Pi 4 in ein **taktisches Operationszentrum (TOC)** für:
+1.  **Lagebild & Führung:** Echtzeit-Tracking und Kartenmaterial via TAK (Team Awareness Kit).
+2.  **Sichere Kommunikation:** Verschlüsselter Chat und VoIP ohne Internet.
+3.  **Funk-Brücke:** Integration von LoRa (Meshtastic) in IP-Netzwerke.
+4.  **Notstrom-Versorgung:** Massive 100Ah Batteriekapazität für tagelangen Betrieb ohne Sonne.
 
 ## ✨ Features
 
 * **🔋 Energie-Autarkie:** 200W faltbares Solarpanel + 30A MPPT Regler + 100Ah AGM Deep Cycle Batterie.
 * **📡 Off-Grid Kommunikation:**
     * **LoRa:** Meshtastic Node (868 MHz) für Kommunikation über Kilometer ohne Mobilfunknetz.
-    * **WLAN:** High-Power Access Point (Atheros AR9271) für lokale Geräte.
-* **💾 Datensicherheit:** Raspberry Pi 4 (8GB) mit 256GB SSD für Server-Dienste und Datenspeicherung.
-* **🛡️ Robustheit:** Passiv gekühltes Aluminium-Gehäuse ("Armor Case"), isoliertes Rako-Case, IP-zertifizierte Durchführungen.
+    * **WLAN:** High-Power Access Point (Atheros AR9271) für lokale Team-Geräte.
+* **🛡️ Edge Cluster:** Betrieb als Single-Node Kubernetes Cluster (k3s) für maximale Stabilität und "Infrastructure as Code".
+* **💾 Hardware:** Passiv gekühltes Aluminium-Gehäuse ("Armor Case"), isoliertes Rako-Case, IP-zertifizierte Durchführungen.
 
 ---
 
@@ -55,23 +57,46 @@ Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die
 Das System folgt einer sternförmigen 12V-Topologie mit zentraler Absicherung.
 
 ![Wiring Diagram](docs/wiring_diagram.png)
-*(Platzhalter: Lade hier das Bild hoch, das ich dir generiert habe)*
+*(Platzhalter: Bild aus dem /docs Ordner)*
 
 **Wichtige Verbindungen:**
 * **Solar Input:** SAE Buchse -> MPPT Regler
 * **Last:** MPPT Load -> Hauptschalter -> Verteiler -> DC-DC Wandler -> Pi 4
-* **Daten:** SSD an USB 3.0 (Blau), Funk-Module an USB 2.0 (zur Vermeidung von Interferenzen).
+* **Daten:** SSD an USB 3.0 (Blau), Funk-Module an USB 2.0 (Interferenz-Vermeidung).
 
 ---
 
-## 💻 Software Stack
+## 💻 Software Stack: "Edge Kubernetes Cluster"
 
-Das System läuft auf **Raspberry Pi OS Lite (64-bit)**. Geplante Services:
+Das System läuft als **Single-Node Kubernetes Cluster** basierend auf **k3s**. Dies ermöglicht "Self-Healing" Capabilities (stürzt ein Service ab, wird er neu gestartet) und ein professionelles Deployment via **Helm Charts**.
 
-1.  **[Meshtastic](https://meshtastic.org/):** Firmware auf dem Heltec V3 Stick zur Teilnahme am Mesh-Netzwerk.
-2.  **[Kiwix](https://www.kiwix.org/):** Zum Hosten von ZIM-Dateien (Wikipedia offline).
-3.  **Hostapd & Dnsmasq:** Um den Raspberry Pi als WLAN-Hotspot zu betreiben.
-4.  **Samba/NFS:** Fileserver für den Datenaustausch im Feld.
+### 🏗️ Orchestrierung & Core
+* **OS:** Raspberry Pi OS Lite (64-bit)
+* **Cluster:** [k3s](https://k3s.io/) (Lightweight Kubernetes, optimiert für Edge/IoT).
+* **Package Management:** **Helm**. Alle Services sind als Charts definiert.
+* **Ingress:** **Traefik** oder **Nginx Ingress** für das Routing interner Domains (z.B. `tak.reduit.local`).
+* **Cert-Manager:** Verwaltet interne Self-Signed Zertifikate für TLS-Verschlüsselung.
+
+### 🗺️ Situational Awareness (Lagebild)
+* **[OpenTAKServer](https://github.com/TakServer/OpenTakServer):**
+    * Deployed via Helm Chart.
+    * Zentraler Server für **ATAK** (Android Team Awareness Kit) Clients.
+    * Liefert Positionsdaten, Marker, Chat und "Data Packages" an alle verbundenen Endgeräte.
+    * Hostet Offline-Kartenkacheln für das Einsatzgebiet.
+
+### 💬 Secure Comms
+* **[Matrix](https://matrix.org/) (Conduit):**
+    * High-Performance Matrix Server (in Rust geschrieben).
+    * Bietet E2EE (End-to-End Encrypted) Chats und Filesharing.
+    * Extrem ressourcensparend im Vergleich zu Synapse.
+* **[Murmur](https://www.mumble.info/) (Mumble):**
+    * VoIP-Server für taktische Sprachkommunikation mit niedriger Latenz.
+    * Funktioniert auch bei instabilen Verbindungen zuverlässig.
+
+### 📡 Funk-Brücke & Tools
+* **[Meshtastic-Bridge](https://meshtastic.org/):**
+    * Custom Pod, der via Python-API Nachrichten vom LoRa-USB-Stick in einen Matrix-Raum spiegelt.
+    * Ermöglicht Kommunikation zwischen WLAN-Nutzern (ATAK/Matrix) und weit entfernten LoRa-Nodes.
 
 ---
 
@@ -83,7 +108,7 @@ Dieses Projekt verwendet große Energiespeicher (Blei-Säure/AGM Batterien) und 
 
 ## 🤝 Mitwirken
 
-Pull Requests für Skripte, 3D-Druck-Teile (Halterungen) oder Konfigurations-Tipps sind willkommen!
+Pull Requests für Helm Charts, 3D-Druck-Teile (Halterungen) oder Konfigurations-Tipps sind willkommen!
 
 ## 📄 Lizenz
 
