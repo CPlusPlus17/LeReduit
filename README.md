@@ -19,7 +19,7 @@ Dieses Projekt dokumentiert den Bau einer tragbaren, energieautarken IT-Infrastr
 
 ## ✨ Features
 
-* **🔋 Energie-Autarkie:** 200W faltbares Solarpanel + 30A MPPT Regler + 100Ah AGM Deep Cycle Batterie.
+* **🔋 Energie-Autarkie:** 100W faltbares Solarpanel + 30A MPPT Regler + 100Ah AGM Deep Cycle Batterie.
 * **📡 Off-Grid Kommunikation:**
     * **LoRa:** Meshtastic Node (868 MHz) für Kommunikation über Kilometer ohne Mobilfunknetz.
     * **WLAN:** High-Power Access Point (Atheros AR9271) für lokale Team-Geräte.
@@ -35,7 +35,7 @@ Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die
 ### ⚡ Energie
 * **Batterie:** ACCONIC VDC100 Deep Cycle AGM (12V, 100Ah)
 * **Solar:** 200W Faltbares Panel & Victron/MPPT 30A Laderegler
-* **Ladung:** SAE-Außenanschluss & PACO 10A Netzladegerät (Backup)
+* **Ladung:** SAE-Aussenanschluss & PACO 10A Netzladegerät (Backup)
 * **Überwachung:** Digitales Voltmeter & Sicherungshalter (16AWG)
 
 ### 🖥️ Compute & Network
@@ -57,7 +57,6 @@ Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die
 Das System folgt einer sternförmigen 12V-Topologie mit zentraler Absicherung.
 
 ![Wiring Diagram](docs/wiring_diagram.png)
-*(Platzhalter: Bild aus dem /docs Ordner)*
 
 **Wichtige Verbindungen:**
 * **Solar Input:** SAE Buchse -> MPPT Regler
@@ -85,11 +84,11 @@ Das System läuft als **Single-Node Kubernetes Cluster** basierend auf **k3s**. 
     * Hostet Offline-Kartenkacheln für das Einsatzgebiet.
 
 ### 💬 Secure Comms
-* **[Matrix](https://matrix.org/) (Conduit):**
+* **[Matrix](https://matrix.org/):**
     * High-Performance Matrix Server (in Rust geschrieben).
     * Bietet E2EE (End-to-End Encrypted) Chats und Filesharing.
     * Extrem ressourcensparend im Vergleich zu Synapse.
-* **[Murmur](https://www.mumble.info/) (Mumble):**
+* **[Mumble](https://www.mumble.info/):**
     * VoIP-Server für taktische Sprachkommunikation mit niedriger Latenz.
     * Funktioniert auch bei instabilen Verbindungen zuverlässig.
 
@@ -102,7 +101,7 @@ Das System läuft als **Single-Node Kubernetes Cluster** basierend auf **k3s**. 
 
 ## ⚠️ Sicherheitshinweis
 
-Dieses Projekt verwendet große Energiespeicher (Blei-Säure/AGM Batterien) und LiPo-Akkus.
+Dieses Projekt verwendet grosse Energiespeicher (Blei-Säure/AGM Batterien) und LiPo-Akkus.
 * **Kurzschlussgefahr:** Eine 100Ah Batterie kann bei Kurzschluss Kabel zum Schmelzen bringen und Brände verursachen. Sicherungen sind Pflicht!
 * **Ausgasung:** AGM-Batterien sind sicher, sollten aber dennoch nicht in luftdichten Behältern ohne Druckausgleich geladen werden (Vent Plug verbaut).
 
