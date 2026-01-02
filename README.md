@@ -1,6 +1,6 @@
 # 🏔️ Le Réduit
 
-> **Autarker Rako-Server: Solar, LoRa, WLAN & SSD. Deine digitale Festung für Kommunikation & Lagebild im Notfall.**
+> **Autarker Server: Solar, LoRa, WLAN & SSD. Deine digitale Festung für Kommunikation & Lagebild im Notfall.**
 
 ![Project Status](https://img.shields.io/badge/Status-In%20Construction-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
