@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: power-monitor
+  namespace: default
+  labels:
+    app: power-monitor
+spec:
+  selector:
+    matchLabels:
+      app: power-monitor
+  template:
+    metadata:
+      labels:
+        app: power-monitor
+    spec:
+      containers:
+      - name: power-monitor
+        image: power-monitor:latest
+        imagePullPolicy: Never  # We assume image is built locally on the Pi
+        securityContext:
+          privileged: true  # Required for I2C access
+        volumeMounts:
+        - name: i2c
+          mountPath: /dev/i2c-1
+        - name: logs
+          mountPath: /var/log
+      volumes:
+      - name: i2c
+        hostPath:
+          path: /dev/i2c-1
+      - name: logs
+        hostPath:
+          path: /var/log/reduit
+          type: DirectoryOrCreate

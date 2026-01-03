@@ -1,0 +1,6 @@
+adafruit-circuitpython-ina219
+adafruit-blinka
+board
+busio
+RPI.GPIO
+smbus2

@@ -1,0 +1,15 @@
+meshtastic:
+  connection_type: serial
+  serial:
+    port: /dev/ttyUSB0
+    baud: 115200
+  channel: 0  # Primary Channel
+
+matrix:
+  homeserver: https://matrix.org
+  user_id: "@reduit_bot:matrix.org"
+  access_token: "YOUR_ACCESS_TOKEN_HERE"
+  room_id: "!your_room_id:matrix.org"
+
+logging:
+  level: INFO

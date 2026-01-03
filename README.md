@@ -33,7 +33,7 @@ Dieses Projekt dokumentiert den Bau einer tragbaren, energieautarken IT-Infrastr
 Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die Hauptkomponenten:
 
 ### ⚡ Energie
-* **Batterie:** ACCONIC VDC100 Deep Cycle AGM (12V, 100Ah)
+* **Batterie:** 12V AGM Deep Cycle (100Ah)
 * **Solar:** 200W Faltbares Panel & Victron/MPPT 30A Laderegler
 * **Ladung:** SAE-Aussenanschluss & PACO 10A Netzladegerät (Backup)
 * **Überwachung:** Digitales Voltmeter & Sicherungshalter (16AWG)
@@ -56,7 +56,7 @@ Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die
 
 Das System folgt einer sternförmigen 12V-Topologie mit zentraler Absicherung.
 
-![Wiring Diagram](docs/wiring_diagram.png)
+See the [Detailed Wiring Schema](docs/wiring_schema.md) for the complete Mermaid diagram and pinout.
 
 **Wichtige Verbindungen:**
 * **Solar Input:** SAE Buchse -> MPPT Regler
