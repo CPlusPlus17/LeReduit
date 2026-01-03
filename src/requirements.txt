@@ -4,3 +4,4 @@ board
 busio
 RPI.GPIO
 smbus2
+requests

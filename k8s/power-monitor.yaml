@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: power-monitor
   namespace: default
   labels:
     app: power-monitor
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: power-monitor
@@ -14,22 +15,55 @@ spec:
       labels:
         app: power-monitor
     spec:
+      # hostNetwork needed if we want to ensure accurate hostname reporting or network access in some edge cases options
+      # But standard pod network should work for Matrix.
       containers:
       - name: power-monitor
-        image: power-monitor:latest
-        imagePullPolicy: Never  # We assume image is built locally on the Pi
+        image: reduit-power-monitor:latest
+        imagePullPolicy: IfNotPresent
         securityContext:
-          privileged: true  # Required for I2C access
+          privileged: true  # Needed for /dev/i2c access and os.system("shutdown")
         volumeMounts:
-        - name: i2c
+        - name: i2c-device
           mountPath: /dev/i2c-1
         - name: logs
           mountPath: /var/log
+        env:
+        - name: MATRIX_HOMESERVER
+          valueFrom:
+            secretKeyRef:
+              name: matrix-secrets
+              key: homeschool-url
+              optional: true
+        - name: MATRIX_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: matrix-secrets
+              key: access-token
+        - name: MATRIX_ROOM_ID
+          valueFrom:
+            secretKeyRef:
+              name: matrix-secrets
+              key: room-id
       volumes:
-      - name: i2c
+      - name: i2c-device
         hostPath:
           path: /dev/i2c-1
+          type: CharDevice
       - name: logs
         hostPath:
-          path: /var/log/reduit
-          type: DirectoryOrCreate
+          path: /var/log
+          type: Directory
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: matrix-secrets
+  namespace: default
+type: Opaque
+stringData:
+  # REPLACE THESE VALUES
+  homeschool-url: "https://matrix.org"
+  access-token: "YOUR_ACCESS_TOKEN"
+  room-id: "YOUR_ROOM_ID"
