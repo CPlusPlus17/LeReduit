@@ -9,23 +9,23 @@ The system uses a **Central Post** topology. All main loads connect to the Load 
 
 ```mermaid
 graph TD
-    Solar[Solar Panel 100W+] -- XT60 --> INA_Solar[INA219 Sensor 1<br>(Address 0x40)]
+    Solar["Solar Panel 100W+"] -- XT60 --> INA_Solar["INA219 Sensor 1<br>(Address 0x40)"]
     INA_Solar --> MPPT[MPPT Charge Controller]
     
-    Battery[12V 100Ah AGM Deep Cycle] -- Fuse 30A --> MPPT
+    Battery["12V 100Ah AGM Deep Cycle"] -- Fuse 30A --> MPPT
     
     MPPT -- Load Output --> MainSwitch[Main Rocker Switch]
-    MainSwitch --> FuseBox[Fuse Box / Distributor]
+    MainSwitch --> FuseBox["Fuse Box / Distributor"]
     
     subgraph "System Load (Monitored)"
-        FuseBox -- Fuse 5A --> INA_Sys[INA219 Sensor 2<br>(Address 0x41/0x44)]
-        INA_Sys --> Buck[12V to 5V 3A USB-C]
+        FuseBox -- Fuse 5A --> INA_Sys["INA219 Sensor 2<br>(Address 0x41/0x44)"]
+        INA_Sys --> Buck["12V to 5V 3A USB-C"]
         Buck --> Pi[Raspberry Pi 4]
     end
     
     subgraph "Aux Outputs"
         FuseBox -- Fuse 10A --> SAE[SAE External Port]
-        FuseBox -- Fuse 5A --> USB_Hub[12V USB Hub / Outlet]
+        FuseBox -- Fuse 5A --> USB_Hub["12V USB Hub / Outlet"]
     end
 ```
 
