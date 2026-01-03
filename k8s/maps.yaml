@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tiles-data
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver
+  namespace: default
+  labels:
+    app: tileserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver
+  template:
+    metadata:
+      labels:
+        app: tileserver
+    spec:
+      initContainer:
+       # Optional: Downloader for Maps if empty
+      - name: map-downloader
+        image: busybox
+        command: ['sh', '-c', 'echo "Check /data for mbtiles. If missing, download manually."']
+        volumeMounts:
+        - name: tiles-storage
+          mountPath: /data
+      containers:
+      - name: tileserver
+        image: maptiler/tileserver-gl
+        args: ["-p", "8080"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: tiles-storage
+          mountPath: /data
+      volumes:
+      - name: tiles-storage
+        persistentVolumeClaim:
+          claimName: tiles-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tileserver
+  namespace: default
+spec:
+  selector:
+    app: tileserver
+  ports:
+    - port: 80
+      targetPort: 8080

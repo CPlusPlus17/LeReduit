@@ -5,3 +5,9 @@ busio
 RPI.GPIO
 smbus2
 requests
+influxdb-client
+w1thermsensor
+adafruit-circuitpython-bme280
+adafruit-circuitpython-mpu6050
+adafruit-circuitpython-bh1750
+gps3

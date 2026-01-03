@@ -31,16 +31,19 @@
 13. **USB Outlet**: 12V PD & QC3.0 Dual USB Charger Socket
 14. **Monitoring A**: INA219 I2C Current Sensor (x2)
 15. **Monitoring B**: 0.28 Inch DC LED Digital Voltmeter
-16. **Wire**: Super Soft 2 Pin Silicone Wire (14AWG & thinner)
+16. **Monitoring C**: DS18B20 Waterproof Temperature Sensor (1-Wire)
+17. **Monitoring D**: BME280 (Humidity/Pressure/Temp) - I2C
+18. **Monitoring E**: MPU6050 (Accelerometer/Gyro) - I2C
+19. **Security**: MC-38 Wired Door/Window Sensor (Reed Switch)
+20. **Audio**: Active Buzzer Module (3.3V-5V)
+21. **Monitoring F**: BH1750 Light Sensor (Lux) - I2C
+22. **Wire**: Super Soft 2 Pin Silicone Wire (14AWG & thinner)
 
 ### 🧠 Computing & RF
-17. **SBC**: Raspberry Pi 4 Model B
-18. **Cooling**: Black Aluminum Alloy Armor Case (Passive)
-19. **Storage**: SSD Drive
-20. **Adapter**: SATA to USB 3.0 Adapter cable
 21. **LoRa Board**: Heltec WiFi LoRa 32 V3 (868MHz)
 22. **LoRa Antenna**: 868MHz External Antenna
-23. **WiFi Adapter**: Atheros AR9271 High Power Stick
+23. **GPS Module**: BE-880 (Beitian) GPS + Compass (UART/I2C)
+24. **WiFi Adapter**: Atheros AR9271 High Power Stick
 24. **RF Cabling**: U.FL to SMA Pigtails (for external antennas)
 25. **Data Cable**: USB 3.2 Gen2 Cable (USB-A to USB-C)
 26. **Timekeeping**: DS3231 RTC Module
