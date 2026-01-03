@@ -54,3 +54,42 @@
 - **Pi 4**: ~88 x 58 mm
 - **SSD**: ~100 x 70 mm
 - **MPPT**: Checks specific model size (usually ~130 x 70 mm for small ones).
+
+## 🕳️ External Rako Box Penetrations
+
+![Le Reduit Box Render](assets/rako_box_left_flank.png)
+
+These are the drill holes required in the **grey plastic box itself** (not the wood plate).
+*Caution: Ensure holes are positioned below the stacking rim and clear of the handle recesses.*
+
+### 1. Left Flank ("Data Zone")
+*Position: Aligned with Internal Logic (Pi, LoRa, WiFi)*
+
+![Le Reduit Box Left Flank](assets/rako_box_left_flank.png)
+
+- **2x SMB/SMA Antenna Mounts (LoRa & WiFi)**:
+    - *Purpose*: External High-Gain Antennas.
+    - *Hole*: 6.5mm (SMA) or 16mm (N-Type).
+    - *Location*: Top corners (spaced apart).
+- **USB Waterproof Pass-through**:
+    - *Purpose*: External Data/Console access.
+    - *Hole*: ~25mm (check diameter).
+    - *Location*: **Mid-Section** (Elevated ~15cm from bottom) to protect against standing water.
+- **Waterproof Vent Plug**:
+    - *Purpose*: Passive cross-ventilation (Inlet).
+    - *Hole*: 12mm (M12).
+    - *Location*: **Mid-Height**, ~5cm from front edge.
+
+### 2. Right Flank ("Power Zone")
+*Position: Aligned with Internal Power (MPPT, Battery, Fuse)*
+
+![Le Reduit Box Right Flank](assets/rako_box_right_flank.png)
+
+- **Solar Input (XT60E-F)**:
+    - *Purpose*: Connect Solar Panel.
+    - *Hole*: Rectangular/Oval cutout (approx. 25mm x 15mm).
+    - *Location*: High up, near MPPT.
+- **Waterproof Vent Plug**:
+    - *Purpose*: Passive cross-ventilation (Outlet).
+    - *Hole*: 12mm (M12).
+    - *Location*: ~5cm from back edge.
