@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meshtastic-node
+  namespace: default
+  labels:
+    app: meshtastic-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meshtastic-node
+  template:
+    metadata:
+      labels:
+        app: meshtastic-node
+    spec:
+      containers:
+      - name: meshtasticd
+        image: meshtastic/meshtasticd:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/usr/bin/meshtasticd", "-d", "/var/lib/meshtastic"]
+        ports:
+        - containerPort: 4403
+          name: api-tcp
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: dev-ttyusb0
+          mountPath: /dev/ttyUSB0
+        - name: meshtastic-data
+          mountPath: /var/lib/meshtastic
+      volumes:
+      - name: dev-ttyusb0
+        hostPath:
+          path: /dev/ttyUSB0
+      - name: meshtastic-data
+        persistentVolumeClaim:
+          claimName: meshtastic-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meshtastic-node
+  namespace: default
+spec:
+  selector:
+    app: meshtastic-node
+  ports:
+  - protocol: TCP
+    port: 4403
+    targetPort: 4403
+    name: api-tcp
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meshtastic-data-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meshtastic-config
+  namespace: default
+data:
+  config.yaml: |
+    # Basic Config for Meshtasticd
+    # Refer to https://meshtastic.org/docs/software/linux-native/
+    UserPrefs:
+      # Set your Region!
+      region: EU868

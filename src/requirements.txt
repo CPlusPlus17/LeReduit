@@ -11,3 +11,6 @@ adafruit-circuitpython-bme280
 adafruit-circuitpython-mpu6050
 adafruit-circuitpython-bh1750
 gps3
+meshtastic
+matrix-nio[e2e]
+PyYAML

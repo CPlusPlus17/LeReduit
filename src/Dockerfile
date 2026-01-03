@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code
-COPY power_monitor.py .
+COPY *.py .
 
 # Ensure logs are flushed immediately
 ENV PYTHONUNBUFFERED=1

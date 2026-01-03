@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meshtastic-bridge
+  namespace: default
+  labels:
+    app: meshtastic-bridge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meshtastic-bridge
+  template:
+    metadata:
+      labels:
+        app: meshtastic-bridge
+    spec:
+      containers:
+      - name: bridge
+        image: le-reduit:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python", "meshtastic_bridge.py"]
+        env:
+        - name: BRIDGE_CONFIG
+          value: "/etc/meshtastic-bridge/config.yaml"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/meshtastic-bridge
+      volumes:
+      - name: config-volume
+        configMap:
+          name: meshtastic-bridge-config
+
