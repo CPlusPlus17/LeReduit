@@ -40,7 +40,7 @@ Eine detaillierte Einkaufsliste befindet sich in [BOM.md](BOM.md). Hier sind die
 
 ### 🖥️ Compute & Network
 * **SBC:** Raspberry Pi 4 Model B (8GB RAM)
-* **Storage:** Intenso TOP SSD (256GB) + USB 3.0 SATA Adapter (UASP)
+| **Storage** | Intenso TOP SSD (256GB, SATA III) + USB 3.0 Adapter | Multiple | ✅ In Stock |
 * **LoRa:** Heltec WiFi LoRa 32 V3 (ESP32)
 * **WiFi:** Atheros AR9271 USB Adapter (mit externer Antenne)
 * **RTC:** DS3231 Real Time Clock (für Zeitstempel ohne Internet)

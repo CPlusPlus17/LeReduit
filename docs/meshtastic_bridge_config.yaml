@@ -11,5 +11,10 @@ matrix:
   access_token: "YOUR_ACCESS_TOKEN_HERE"
   room_id: "!your_room_id:matrix.org"
 
+security:
+  admin_pin: "1234"
+  allowed_matrix_users:
+    - "@manuel:matrix.org"
+
 logging:
   level: INFO

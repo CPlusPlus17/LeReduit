@@ -1,0 +1,26 @@
+global:
+  domain: "reduit.local"
+
+maps:
+  enabled: true
+  region: "switzerland"
+  # Placeholder: In a real scenario, this would be a real URL like "https://github.com/maptiler/tileserver-gl-data/raw/master/zurich.mbtiles"
+  # or a custom S3 bucket.
+  downloadUrl: "https://data.maptiler.com/downloads/tiles/{{ .Values.maps.region }}.mbtiles"
+  storage: "10Gi"
+
+matrix:
+  enabled: true
+  serverName: "reduit.local"
+  storage: "1Gi"
+
+meshtastic:
+  enabled: true
+  storage: "100Mi"
+
+bridge:
+  enabled: true
+  image: "le-reduit:latest"
+  # These are filled by the setup script
+  matrixToken: ""
+  matrixRoom: ""

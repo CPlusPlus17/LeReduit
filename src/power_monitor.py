@@ -38,7 +38,10 @@ PIN_LID_SENSOR = 17
 PIN_BUZZER = 27
 
 LOG_FILE = "/var/log/reduit_power.csv"
-SAMPLE_INTERVAL = 5
+SAMPLE_INTERVAL_ACTIVE = 5
+SAMPLE_INTERVAL_ECO = 30
+current_sample_interval = SAMPLE_INTERVAL_ACTIVE
+
 SHUTDOWN_VOLTAGE = 11.5
 SHUTDOWN_GRACE_PERIOD_SAMPLES = 3
 TAMPER_THRESHOLD_G = 0.5
@@ -252,10 +255,61 @@ def check_matrix_commands():
                         set_wifi(False)
                     elif body == "!wifi on":
                         set_wifi(True)
+                    elif body == "!maps off":
+                        set_k8s_scale("tileserver", 0)
+                    elif body == "!maps on":
+                        set_k8s_scale("tileserver", 1)
+                    elif body == "!eco on":
+                        set_cpu_governor("powersave")
+                        set_k8s_scale("tileserver", 0)
+                        set_wifi_powersave(True)
+                        global current_sample_interval
+                        current_sample_interval = SAMPLE_INTERVAL_ECO
+                        send_matrix_alert("💤 ECO MODE: ON (Gov:Powersave, Maps:Off, Poll:30s)")
+                    elif body == "!eco off":
+                        set_cpu_governor("ondemand")
+                        set_k8s_scale("tileserver", 1)
+                        set_wifi_powersave(False)
+                        global current_sample_interval
+                        current_sample_interval = SAMPLE_INTERVAL_ACTIVE
+                        send_matrix_alert("🚀 ECO MODE: OFF (System Restored)")
                     elif body == "!status":
                         send_status_report()
     except Exception as e:
         logger.error(f"Matrix Sync Fail: {e}")
+
+def set_wifi_powersave(enable):
+    """Sets WiFi Power Save mode."""
+    state = "on" if enable else "off"
+    try:
+        subprocess.run(["iw", "dev", WIFI_INTERFACE, "set", "power_save", state], check=True)
+    except Exception as e:
+        logger.error(f"WiFi PS Failed: {e}")
+
+def set_k8s_scale(deployment, replicas):
+    """Scales a k8s deployment to save power."""
+    try:
+        # Assumes running as root with kubectl access or KUBECONFIG set
+        cmd = ["kubectl", "scale", "deployment", deployment, f"--replicas={replicas}", "-n", "default"]
+        subprocess.run(cmd, check=True)
+        send_matrix_alert(f"⚖️ Scaled {deployment} to {replicas} replicas.")
+        buzz(0.1, 1)
+    except Exception as e:
+        logger.error(f"Scale Failed: {e}")
+        send_matrix_alert(f"⚠️ Scale Failed: {e}")
+
+def set_cpu_governor(mode):
+    """Sets CPU Governor (powersave|ondemand|performance)."""
+    # modes: powersave (min freq), ondemand (jumpy), performance (max)
+    try:
+        # RPi specific: write to all cores
+        # We use a shell command with wildcard expansion
+        subprocess.run(f"echo {mode} | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor", shell=True, check=True)
+        send_matrix_alert(f"🧠 CPU Governor set to: {mode.upper()}")
+        buzz(0.1, 1)
+    except Exception as e:
+        logger.error(f"CPU Gov Failed: {e}")
+        send_matrix_alert(f"⚠️ CPU Gov Failed: {e}")
 
 def send_status_report():
     if not latest_data:
@@ -263,8 +317,15 @@ def send_status_report():
         return
         
     d = latest_data
+    # Get current CPU Gov
+    try:
+        with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", "r") as f:
+            gov = f.read().strip()
+    except: gov = "?"
+
     msg = (f"🔋 **Power**: {d.get('system_volts',0):.2f}V | {d.get('net_watts',0):.1f}W Net\n"
            f"🌡️ **Climate**: {d.get('temperature',0):.1f}°C | {d.get('humidity',0):.0f}% | {d.get('pressure',0):.0f}hPa\n"
+           f"🧠 **System**: CPU: {gov} | Maps: {'?'}\n" # Could check replica count if needed
            f"💡 **Light/Lid**: {d.get('lux',0):.0f} lx | Lid: {'OPEN' if d.get('lid_open') else 'Closed'}\n"
            f"🧭 **Heading**: {d.get('heading',0):.0f}°")
     send_matrix_alert(msg)
@@ -528,7 +589,10 @@ def main():
         try: log_to_csv(data)
         except: pass
 
-        time.sleep(SAMPLE_INTERVAL)
+        try: log_to_csv(data)
+        except: pass
+
+        time.sleep(current_sample_interval)
 
 if __name__ == "__main__":
     main()

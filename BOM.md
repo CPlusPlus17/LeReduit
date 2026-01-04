@@ -47,6 +47,9 @@
 24. **RF Cabling**: U.FL to SMA Pigtails (for external antennas)
 25. **Data Cable**: USB 3.2 Gen2 Cable (USB-A to USB-C)
 26. **Timekeeping**: DS3231 RTC Module
+27. **LTE Dongle**: USB A7670G LTE Cat 1 (Global Bands)
+28. **LTE Antenna**: YE0003AA 699-5000MHz Multi-band
+29. **LTE Pigtail**: SMA to IPX-1 Pigtail (RP-SMA to U.fl)
 
 ### 🕹️ Interface & Enclosure Parts
 27. **Shutdown Button**: 12mm Momentary Push Button

@@ -1,8 +1,8 @@
+{{- if .Values.bridge.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: meshtastic-bridge
-  namespace: default
   labels:
     app: meshtastic-bridge
 spec:
@@ -15,12 +15,9 @@ spec:
       labels:
         app: meshtastic-bridge
     spec:
-      hostNetwork: true
       containers:
       - name: bridge
-        securityContext:
-          privileged: true
-        image: le-reduit:latest
+        image: "{{ .Values.bridge.image }}"
         imagePullPolicy: IfNotPresent
         command: ["python", "meshtastic_bridge.py"]
         env:
@@ -33,4 +30,26 @@ spec:
       - name: config-volume
         configMap:
           name: meshtastic-bridge-config
-
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meshtastic-bridge-config
+data:
+  config.yaml: |
+    meshtastic:
+      connection_type: network
+      network:
+        host: "meshtastic-node"
+        port: 4403
+      channel: 0
+    
+    matrix:
+      homeserver: "http://matrix-server:8008"
+      user_id: "@reduit_bot:{{ .Values.global.domain }}"
+      access_token: {{ .Values.bridge.matrixToken | quote }}
+      room_id: {{ .Values.bridge.matrixRoom | quote }}
+    
+    logging:
+      level: INFO
+{{- end }}

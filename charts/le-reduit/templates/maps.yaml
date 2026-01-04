@@ -1,0 +1,72 @@
+{{- if .Values.maps.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver
+  labels:
+    app: tileserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver
+  template:
+    metadata:
+      labels:
+        app: tileserver
+    spec:
+      initContainers:
+      - name: map-downloader
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            TARGET_FILE="/data/regions/{{ .Values.maps.region }}.mbtiles"
+            if [ -f "$TARGET_FILE" ]; then
+              echo "Map for {{ .Values.maps.region }} already exists."
+            else
+              echo "Downloading map for {{ .Values.maps.region }} from {{ .Values.maps.downloadUrl }}..."
+              mkdir -p /data/regions
+              wget -O "$TARGET_FILE" "{{ .Values.maps.downloadUrl }}" || echo "Download failed (or URL invalid), skipping..."
+            fi
+        volumeMounts:
+        - name: tiles-storage
+          mountPath: /data
+      containers:
+      - name: tileserver
+        image: maptiler/tileserver-gl
+        args: ["-p", "8080", "--config", "/config/config.json"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: tiles-storage
+          mountPath: /data
+        # We would mount a config.json here too in a real setup, pointing to /data/regions/...
+      volumes:
+      - name: tiles-storage
+        persistentVolumeClaim:
+          claimName: tiles-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tileserver
+spec:
+  selector:
+    app: tileserver
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tiles-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.maps.storage }}
+{{- end }}
