@@ -49,14 +49,31 @@ TAMPER_THRESHOLD_G = 0.5
 
 # --- Configuration ---
 # ...
+# ...
 WIFI_INTERFACE = "wlan1"
+WIFI_TXPOWER_DBM = int(os.getenv("WIFI_TXPOWER_DBM", "10"))
+# USB Bus ID for the Atheros Stick (Run 'lsusb -t' or check /sys/bus/usb/devices/ to find this)
+# Example: "1-1.3" or similar. If empty, deep sleep is skipped.
+WIFI_USB_ID = os.getenv("WIFI_USB_ID", "")
+# Path to the driver to unbind from (usually ath9k_htc)
+WIFI_DRIVER_PATH = os.getenv("WIFI_DRIVER_PATH", "/sys/bus/usb/drivers/ath9k_htc")
 
+# --- Alert Thresholds ---
 # --- Alert Thresholds ---
 THRESH_VOLT_LOW_WARN = 12.0
 THRESH_TEMP_HIGH = 50.0
 THRESH_TEMP_LOW = 0.0
 THRESH_HUMIDITY_HIGH = 80.0
 THRESH_LIGHT_LEAK = 10.0 # Lux inside closed box
+
+# --- Auto Mode Thresholds ---
+AUTO_MODE_ENABLED = os.getenv("AUTO_MODE_ENABLED", "1") == "1"
+THRESH_SOLAR_HIGH = 15.0 # Watts (Go Tactical)
+THRESH_BATT_HIGH = 13.2  # Volts (Go Tactical)
+THRESH_SOLAR_LOW = 5.0   # Watts (Go Sentry)
+THRESH_BATT_LOW = 12.5   # Volts (Go Sentry)
+HYSTERESIS_SAMPLES = 12  # 12 * 5s = 60s
+
 
 # --- Alert Manager Class ---
 class AlertManager:
@@ -225,8 +242,65 @@ class Compass:
 
 # Global State for Status Command
 latest_data = {}
+auto_mode_counter = 0 # +ve for Tactical, -ve for Sentry
+current_mode = "unknown" # 'sentry', 'tactical', 'manual'
 
 # ... (rest of config) ...
+
+def set_mode_sentry(reason="User Command"):
+    """Enables Sentry (Eco) Mode."""
+    global current_sample_interval, current_mode
+    if current_mode == "sentry": return
+    
+    set_cpu_governor("powersave")
+    set_k8s_scale("tileserver", 0)
+    set_wifi_powersave(True)
+    current_sample_interval = SAMPLE_INTERVAL_ECO
+    current_mode = "sentry"
+    send_matrix_alert(f"💤 SENTRY MODE ACTIVE ({reason})")
+
+def set_mode_tactical(reason="User Command"):
+    """Enables Tactical (Active) Mode."""
+    global current_sample_interval, current_mode
+    if current_mode == "tactical": return
+    
+    set_cpu_governor("ondemand")
+    set_k8s_scale("tileserver", 1)
+    set_wifi_powersave(False) # Performance WiFi
+    current_sample_interval = SAMPLE_INTERVAL_ACTIVE
+    current_mode = "tactical"
+    send_matrix_alert(f"🚀 TACTICAL MODE ACTIVE ({reason})")
+
+def check_auto_mode(data):
+    """Checks power levels and auto-switches modes."""
+    global auto_mode_counter
+    if not AUTO_MODE_ENABLED: return
+
+    # Current readings
+    solar_watts = data.get('solar_watts', 0)
+    batt_volts = data.get('system_volts', 0)
+    
+    # Conditions
+    # Go TACTICAL if Solar is abundant OR Battery is very full
+    cond_tactical = (solar_watts > THRESH_SOLAR_HIGH) or (batt_volts > THRESH_BATT_HIGH)
+    
+    # Go SENTRY if Solar is low AND Battery is not full (discharging/low)
+    cond_sentry = (solar_watts < THRESH_SOLAR_LOW) and (batt_volts < THRESH_BATT_LOW)
+    
+    if cond_tactical:
+        auto_mode_counter += 1
+        if auto_mode_counter > HYSTERESIS_SAMPLES:
+            set_mode_tactical(reason="☀️ Energy Abundant")
+            auto_mode_counter = HYSTERESIS_SAMPLES # Clamp
+    elif cond_sentry:
+        auto_mode_counter -= 1
+        if auto_mode_counter < -HYSTERESIS_SAMPLES:
+            set_mode_sentry(reason="☁️ Energy Saving")
+            auto_mode_counter = -HYSTERESIS_SAMPLES # Clamp
+    else:
+        # Decay counter towards 0 (optional, or just hold state)
+        if auto_mode_counter > 0: auto_mode_counter -= 1
+        elif auto_mode_counter < 0: auto_mode_counter += 1
 
 def check_matrix_commands():
     """Polls Matrix for new commands (!wifi on/off, !status)."""
@@ -260,19 +334,22 @@ def check_matrix_commands():
                     elif body == "!maps on":
                         set_k8s_scale("tileserver", 1)
                     elif body == "!eco on":
-                        set_cpu_governor("powersave")
-                        set_k8s_scale("tileserver", 0)
-                        set_wifi_powersave(True)
-                        global current_sample_interval
-                        current_sample_interval = SAMPLE_INTERVAL_ECO
-                        send_matrix_alert("💤 ECO MODE: ON (Gov:Powersave, Maps:Off, Poll:30s)")
+                        set_mode_sentry()
                     elif body == "!eco off":
-                        set_cpu_governor("ondemand")
-                        set_k8s_scale("tileserver", 1)
-                        set_wifi_powersave(False)
-                        global current_sample_interval
-                        current_sample_interval = SAMPLE_INTERVAL_ACTIVE
-                        send_matrix_alert("🚀 ECO MODE: OFF (System Restored)")
+                        set_mode_tactical()
+                    elif body == "!auto on":
+                        global AUTO_MODE_ENABLED
+                        AUTO_MODE_ENABLED = True
+                        send_matrix_alert("🔄 Dynamic Power Switching: ENABLED")
+                        buzz(0.1, 2)
+                    elif body == "!auto off":
+                        global AUTO_MODE_ENABLED
+                        AUTO_MODE_ENABLED = False
+                        # Reset counter to zero to avoid stuck state if re-enabled
+                        global auto_mode_counter
+                        auto_mode_counter = 0
+                        send_matrix_alert("🛑 Dynamic Power Switching: DISABLED (Manual Mode Only)")
+                        buzz(0.5)
                     elif body == "!status":
                         send_status_report()
     except Exception as e:
@@ -283,8 +360,42 @@ def set_wifi_powersave(enable):
     state = "on" if enable else "off"
     try:
         subprocess.run(["iw", "dev", WIFI_INTERFACE, "set", "power_save", state], check=True)
+        logger.info(f"WiFi Power Save set to {state}")
     except Exception as e:
         logger.error(f"WiFi PS Failed: {e}")
+
+def set_tx_power(dbm):
+    """Sets WiFi Transmission Power Limit."""
+    try:
+        # 'iw dev wlan1 set txpower fixed 1000' (1000mBm = 10dBm)
+        mBm = dbm * 100
+        subprocess.run(["iw", "dev", WIFI_INTERFACE, "set", "txpower", "fixed", str(mBm)], check=True)
+        logger.info(f"WiFi TxPower set to {dbm}dBm")
+    except Exception as e:
+        logger.error(f"Set TxPower Failed: {e}")
+
+def set_usb_power(enable):
+    """Controls power to the USB device via Driver Bind/Unbind."""
+    if not WIFI_USB_ID or not WIFI_DRIVER_PATH:
+        logger.warning("Deep Sleep skipped: WIFI_USB_ID or WIFI_DRIVER_PATH not set.")
+        return
+
+    action = "bind" if enable else "unbind"
+    path = os.path.join(WIFI_DRIVER_PATH, action)
+    
+    try:
+        # Check if already in desired state to avoid errors
+        dev_path = os.path.join(WIFI_DRIVER_PATH, WIFI_USB_ID)
+        is_bound = os.path.exists(dev_path)
+        
+        if enable and is_bound: return
+        if not enable and not is_bound: return
+
+        logger.info(f"WiFi Deep Sleep: {action}ing {WIFI_USB_ID}...")
+        with open(path, "w") as f:
+            f.write(WIFI_USB_ID)
+    except Exception as e:
+        logger.error(f"USB Power {action} Failed: {e}")
 
 def set_k8s_scale(deployment, replicas):
     """Scales a k8s deployment to save power."""
@@ -325,7 +436,7 @@ def send_status_report():
 
     msg = (f"🔋 **Power**: {d.get('system_volts',0):.2f}V | {d.get('net_watts',0):.1f}W Net\n"
            f"🌡️ **Climate**: {d.get('temperature',0):.1f}°C | {d.get('humidity',0):.0f}% | {d.get('pressure',0):.0f}hPa\n"
-           f"🧠 **System**: CPU: {gov} | Maps: {'?'}\n" # Could check replica count if needed
+           f"🧠 **System**: Mode: {current_mode.upper()} | CPU: {gov}\n"
            f"💡 **Light/Lid**: {d.get('lux',0):.0f} lx | Lid: {'OPEN' if d.get('lid_open') else 'Closed'}\n"
            f"🧭 **Heading**: {d.get('heading',0):.0f}°")
     send_matrix_alert(msg)
@@ -340,7 +451,13 @@ def main():
     hostname = socket.gethostname()
     buzz(0.1, 2)
     send_matrix_alert(f"🟢 Monitor Online on {hostname}. Audio & Sensors Active.")
+    buzz(0.1, 2)
+    send_matrix_alert(f"🟢 Monitor Online on {hostname}. Audio & Sensors Active.")
     logger.info("Starting Power Monitor Loop...")
+
+    # Initial WiFi Config
+    set_tx_power(WIFI_TXPOWER_DBM)
+    set_wifi_powersave(True)
 
     low_voltage_counter = 0
     last_accel = None
@@ -380,16 +497,31 @@ def main():
         # Check Thresholds
         check_sensor_thresholds(data)
         
+        # Check Auto Mode
+        check_auto_mode(data)
+        
         # Logging
         # ... (rest of loop) ...
 
 def set_wifi(state):
-    """Toggles WiFi Interface."""
+    """Toggles WiFi Interface and USB Power."""
     cmd = "up" if state else "down"
     try:
-        # Use ip link set
-        subprocess.run(["ip", "link", "set", WIFI_INTERFACE, cmd], check=True)
-        send_matrix_alert(f"📶 WiFi {WIFI_INTERFACE} is now {cmd.upper()}.")
+        if state:
+            # Wake up: 1. Power on USB, 2. Link up, 3. Config
+            set_usb_power(True)
+            time.sleep(2) # Wait for device to enumerate
+            subprocess.run(["ip", "link", "set", WIFI_INTERFACE, cmd], check=True)
+            time.sleep(1)
+            set_tx_power(WIFI_TXPOWER_DBM)
+            set_wifi_powersave(True)
+            send_matrix_alert(f"📶 WiFi {WIFI_INTERFACE} is now UP (Active).")
+        else:
+            # Sleep: 1. Link down, 2. Power off USB
+            subprocess.run(["ip", "link", "set", WIFI_INTERFACE, cmd], check=True)
+            set_usb_power(False)
+            send_matrix_alert(f"💤 WiFi {WIFI_INTERFACE} is now DOWN (Deep Sleep).")
+            
         buzz(0.1, 1) # Confirm beep
     except Exception as e:
         send_matrix_alert(f"⚠️ Failed to set WiFi {cmd}: {e}")

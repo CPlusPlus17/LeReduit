@@ -1,89 +1,89 @@
-# 🎨 Lackieranleitung für das Le Réduit Board
+# 🎨 Painting Guide for the Le Réduit Board
 
-Diese Anleitung beschreibt den Schritt-für-Schritt-Prozess, um die 8mm Sperrholzplatte sauber und dauerhaft zu lackieren. Ein gutes Finish schützt das Holz vor Feuchtigkeit und gibt dem Case einen professionellen Look.
+This guide describes the step-by-step process to cleanly and permanently paint the 8mm plywood board. A good finish protects the wood from moisture and gives the case a professional look.
 
-## ⚠️ Sicherheitshinweise
-*   **PSA tragen**: Beim Schleifen und Sprayen immer eine Atemschutzmaske (mindestens FFP2, besser mit Aktivkohlefilter für Lösemittel) und Schutzbrille tragen.
-*   **Belüftung**: Nur in gut belüfteten Räumen oder draußen arbeiten.
-*   **Temperatur**:
+## ⚠️ Safety Instructions
+*   **Wear PPE**: Always wear a respirator (at least FFP2, preferably with an activated carbon filter for solvents) and safety goggles when sanding and spraying.
+*   **Ventilation**: Only work in well-ventilated rooms or outdoors.
+*   **Temperature**:
     *   **Optimal**: 15°C - 25°C.
-    *   **Minimum**: **+10°C**. Unter 10°C trocknet der Lack nicht korrekt, das Bindemittel vernetzt nicht, und der Lack bleibt weich.
-    *   **⛔️ WARNUNG / DANGER**: Bei **-5°C** (oder generell unter 10°C) funktioniert normaler Lack nicht!
-        *   Der Lack gefriert, bevor er trocknet.
-        *   Er wird rissig ("Krakelee-Effekt"), haftet nicht oder wird matt/stumpf.
-        *   Der Druck in der Dose sinkt, es sprotzt statt zu sprühen.
-    *   **⛔️ WINTER-WARNUNG**: Wenn du keine beheizte Werkstatt hast, **vergiss das Sprayen bis zum Frühling!**
-        *   Unter 10°C trocknet der Lack nicht.
-        *   Draußen sprayen bei Minusgraden ruiniert das Ergebnis.
-        *   Drinnen trocknen stinkt extrem und ist ungesund.
+    *   **Minimum**: **+10°C**. Below 10°C, the paint will not dry correctly, the binder will not cross-link, and the paint will remain soft.
+    *   **⛔️ WARNING / DANGER**: At **-5°C** (or generally below 10°C), normal paint does not work!
+        *   The paint freezes before it dries.
+        *   It cracks ("craquelure effect"), does not adhere, or becomes matte/dull.
+        *   The pressure in the can drops, causing it to sputter instead of spray.
+    *   **⛔️ WINTER WARNING**: If you don't have a heated workshop, **forget about spraying until spring!**
+        *   Below 10°C, the paint won't dry.
+        *   Spraying outside in freezing temperatures ruins the result.
+        *   Drying indoors smells extreme and is unhealthy.
 
-    ### ✅ Die Lösung für den Winter: Nicht Sprayen!
-    Da du das Board vermutlich vor März fertig haben willst, greife zu **Plan B**. Das geht bequem drinnen:
+    ### ✅ The Solution for Winter: Don't Spray!
+    Since you probably want the board finished before March, go with **Plan B**. This can be comfortably done indoors:
 
-    ### Option 1: Folieren (Vinyl Wrap) 🏆 *Empfehlung*
-    *   **Warum**: Sieht extrem technisch/clean aus (Cyberpunk-Look), stinkt nicht, geht im Wohnzimmer.
-    *   **Material**: "Car Wrapping Folie" (z.B. 3M oder Oracal) in Matt Schwarz, Carbon oder Camo. Ein Föhn hilft beim Verkleben an den Kanten.
-    *   **Vorbereitung**: Brett muss sehr glatt geschliffen und staubfrei sein. Evtl. Klarlack (zum Streichen) als Haftgrund, falls das Holz zu saugfähig ist.
+    ### Option 1: Vinyl Wrap 🏆 *Recommended*
+    *   **Why**: Looks extremely technical/clean (Cyberpunk look), doesn't smell, can be done in the living room.
+    *   **Material**: "Car Wrapping Film" (e.g., 3M or Oracal) in Matte Black, Carbon, or Camo. A hairdryer helps with gluing around edges.
+    *   **Preparation**: Board must be sanded very smooth and dust-free. Possibly clear varnish (brush-on) as a primer if the wood is too absorbent.
 
-    ### Option 2: Rollen (Acryl-Lack)
-    *   **Warum**: Wasserbasierter Acryl-Lack riecht kaum und trocknet bei Zimmertemperatur.
-    *   **Material**: Hochwertiger Buntlack (Acryl, "PU-verstärkt"), Schaumstoffwalze.
-    *   **Vorgehen**: 2-3 dünne Schichten rollen, dazwischen leicht anschleifen.
-    *   **Ergebnis**: Wird nicht ganz so glatt wie gesprayt (leichte "Orangenhaut"), ist aber sehr robust.
+    ### Option 2: Roller (Acrylic Paint)
+    *   **Why**: Water-based acrylic paint has almost no smell and dries at room temperature.
+    *   **Material**: High-quality colored paint (Acrylic, "PU-reinforced"), foam roller.
+    *   **Procedure**: Roll 2-3 thin layers, sand lightly in between.
+    *   **Result**: Not quite as smooth as sprayed (slight "orange peel"), but very robust.
 
-## 🛠 Materialliste
-*   **Schleifpapier**:
-    *   Körnung P120 (Grob)
-    *   Körnung P240 (Fein)
-*   **Reinigung**:
-    *   Mikrofasertuch oder Staubbindetuch (Honigtuch)
-    *   Evtl. Silikonentferner oder Spiritus
-*   **Lacke**:
-    *   Grundierung (Primer) für Holz (am besten Sprühdose)
-    *   Buntlack (Deckfarbe, z.B. Schwarz Matt oder Seidenmatt)
-    *   (Optional) Klarlack zur Versiegelung
+## 🛠 Material List
+*   **Sandpaper**:
+    *   Grit P120 (Coarse)
+    *   Grit P240 (Fine)
+*   **Cleaning**:
+    *   Microfiber cloth or tack cloth (sticky cloth)
+    *   Possibly silicone remover or methylated spirits
+*   **Paints**:
+    *   Primer for wood (preferably spray can)
+    *   Colored paint (Top coat, e.g., Matte Black or Satin)
+    *   (Optional) Clear coat for sealing
 
-## 📝 Schritt-für-Schritt Anleitung
+## 📝 Step-by-Step Instructions
 
-### 1. Vorbereitung (Kritisch!)
-Bevor der erste Tropfen Farbe fließt, muss das Brett mechanisch fertig sein.
-*   **Alle Löcher bohren**: Stelle sicher, dass ALLE Durchführungen (Schalter, Kabel, Montage) gebohrt sind. Lackiertes Holz zu bohren führt oft zum Abplatzen des Lacks.
-*   **Kanten brechen**: Gehe mit dem Schleifpapier leicht über alle scharfen Kanten der Platte und der Bohrlöcher. Farbe hält auf scharfen Kanten extrem schlecht und reißt dort zuerst auf.
+### 1. Preparation (Critical!)
+Before the first drop of paint flows, the board must be mechanically finished.
+*   **Drill All Holes**: Ensure ALL feedthroughs (switches, cables, mounting) are drilled. Drilling painted wood often leads to paint chipping.
+*   **Chamfer Edges**: Lightly go over all sharp edges of the plate and drill holes with sandpaper. Paint adheres extremely poorly to sharp edges and cracks there first.
 
-### 2. Grobschliff (P120)
-*   Schleife die gesamte Oberfläche (Vorder- und Rückseite!) sowie die Kanten gründlich an.
-*   Ziel: Unebenheiten entfernen und die Holzfasern für die Grundierung öffnen.
-*   *Tipp*: Schleifklotz verwenden für eine plane Fläche.
+### 2. Coarse Sanding (P120)
+*   Thoroughly sand the entire surface (front and back!) as well as the edges.
+*   Goal: Remove unevenness and open the wood fibers for the primer.
+*   *Tip*: Use a sanding block for a flat surface.
 
-### 3. Entstauben
-*   Entferne den Schleifstaub **gründlich**.
-*   Erst abfegen/saugen, dann mit einem leicht feuchten Tuch oder Staubbindetuch abwischen.
-*   Warten, bis das Holz wieder absolut trocken ist.
+### 3. Dust Removal
+*   Remove sanding dust **thoroughly**.
+*   First sweep/vacuum, then wipe with a slightly damp cloth or tack cloth.
+*   Wait until the wood is absolutely dry again.
 
-### 4. Grundieren (Primer)
-Die Grundierung ist wichtig, da Holz saugfähig ist. Ohne Grundierung "säuft" das Holz den Decklack weg und es wird fleckig.
-*   Dose 2-3 Minuten kräftig schütteln.
-*   **Erste Schicht**: Dünn sprühen! Nicht versuchen, beim ersten Mal deckend zu sein.
-*   Abstand ca. 20-30 cm.
-*   Trocknen lassen (gemäß Dosenaufdruck, meist ca. 15-30 Min).
+### 4. Priming (Primer)
+Priming is important because wood is absorbent. Without primer, the wood "soaks up" the top coat and it becomes patchy.
+*   Shake the can vigorously for 2-3 minutes.
+*   **First Layer**: Spray thinly! Do not try to be opaque the first time.
+*   Distance approx. 20-30 cm.
+*   Let dry (according to can instructions, usually approx. 15-30 mins).
 
-### 5. Zwischenschliff (P240)
-Nach der Grundierung stellen sich oft kleine Holzfasern auf („Härchen“). Das Brett fühlt sich rau an.
-*   Ganz leicht (!) mit P240 drüberstreicheln. Nicht die Grundierung wieder runterschleifen, nur glätten.
-*   Wieder entstauben.
+### 5. Intermediate Sanding (P240)
+After priming, small wood fibers often stand up ("hairs"). The board feels rough.
+*   Very lightly (!) stroke over with P240. Do not sand the primer down again, just smooth it.
+*   Remove dust again.
 
-### 6. Lackieren (Decklack)
-*   **Taktik**: Lieber 3 dünne Schichten als eine dicke (die läuft sonst -> "Nasen").
-*   **Kreuzgang**: Sprühe erst horizontal (links-rechts), dann vertikal (hoch-runter).
-*   Beginne den Sprühstoß *neben* dem Brett und ziehe über das Brett durch. Höre erst *neben* dem Brett wieder auf.
-*   **Schicht 1**: Nebelgang (nur leicht anhaften). Antrocknen lassen (ca. 5-10 Min).
-*   **Schicht 2**: Deckender Gang. Antrocknen lassen.
-*   **Schicht 3**: Finish (falls noch nicht perfekt gedeckt).
-*   Denke auch an die **Kanten** (Schnittkanten saugen besonders stark, hier evtl. einen Extra-Durchgang machen).
+### 6. Painting (Top Coat)
+*   **Tactic**: Better 3 thin layers than one thick one (otherwise it runs -> "drips").
+*   **Cross Coat**: Spray horizontally (left-right) first, then vertically (up-down).
+*   Start the spray burst *next to* the board and pull through over the board. Stop only *next to* the board again.
+*   **Layer 1**: Mist coat (only lightly adhere). Let flash off (approx. 5-10 mins).
+*   **Layer 2**: Covering coat. Let flash off.
+*   **Layer 3**: Finish (if not yet perfectly covered).
+*   Also think about the **edges** (cut edges absorb particularly strongly, maybe do an extra pass here).
 
-### 7. Trocknung
-*   Lass das Brett mindestens **24 Stunden** durchtrocknen, bevor du Komponenten montierst.
-*   Lack ist oft nach 1 Stunde "staubtrocken", aber erst nach Tagen voll belastbar. Wenn du die Komponenten zu früh festschraubst, klebt der Lack am Bauteil fest oder drückt sich ein.
+### 7. Drying
+*   Let the board dry thoroughly for at least **24 hours** before mounting components.
+*   Paint is often "dust dry" after 1 hour, but only fully resilient after days. If you screw the components on too early, the paint will stick to the component or indent.
 
 ---
-**Viel Erfolg beim Sprayen!** 🎨
+**Good luck with spraying!** 🎨
