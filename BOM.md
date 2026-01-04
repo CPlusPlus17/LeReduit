@@ -17,8 +17,8 @@
 
 ### ⚡ Energy & Power Management
 1.  **Solar Panel**: 100W/200W Foldable Panel
-2.  **Charge Controller**: MPPT Solar Charge Controller
-3.  **Battery**: 12V AGM Deep Cycle 100Ah
+2.  **Charge Controller**: Victron Energy SmartSolar MPPT 100/20
+3.  **Battery**: Hypery Smart 12V 100Ah LiFePO4 (Bluetooth, BMS)
 4.  **DC-DC Converter**: SZWENGAO 12V to 5V 3A (15W) USB-C
 5.  **Main Switch**: 12V 23mm Round Rocker Switch (LED)
 6.  **Secondary Switch**: 1Pc On/Off SPST Round Rocker

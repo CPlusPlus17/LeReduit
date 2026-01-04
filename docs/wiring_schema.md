@@ -12,7 +12,7 @@ graph TD
     Solar["Solar Panel 100W+"] -- XT60 --> INA_Solar["INA219 Sensor 1<br>(Address 0x40)"]
     INA_Solar --> MPPT[MPPT Charge Controller]
     
-    Battery["12V 100Ah AGM Deep Cycle"] -- Fuse 30A --> MPPT
+    Battery["12V 100Ah LiFePO4 (Hypery)"] -- Fuse 30A --> MPPT
     
     MPPT -- Load Output --> MainSwitch[Main Rocker Switch]
     MainSwitch --> FuseBox["Fuse Box / Distributor"]

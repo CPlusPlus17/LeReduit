@@ -19,7 +19,7 @@ This project documents the construction of a portable, energy-autonomous IT infr
 
 ## ✨ Features
 
-* **🔋 Energy Autonomy:** 100W/200W foldable solar panel + 30A MPPT controller + 100Ah AGM Deep Cycle battery.
+* **🔋 Energy Autonomy:** 100W/200W foldable solar panel + Victron SmartSolar MPPT 100/20 + 100Ah LiFePO4 battery.
 * **📡 Off-Grid Communication:**
     * **LoRa:** Meshtastic Node (868 MHz) for communication over kilometers without mobile networks.
     * **LTE:** 4G/Cat-1 Bridge for hybrid connectivity when mobile networks are available.
@@ -34,8 +34,8 @@ This project documents the construction of a portable, energy-autonomous IT infr
 A detailed shopping list can be found in [BOM.md](BOM.md). Here are the main components:
 
 ### ⚡ Energy
-* **Battery:** 12V AGM Deep Cycle (100Ah)
-* **Solar:** 100W/200W Foldable Panel & Victron/MPPT 30A Charge Controller
+* **Battery:** Hypery Smart 12V LiFePO4 (100Ah, Bluetooth, BMS)
+* **Solar:** 100W/200W Foldable Panel & Victron SmartSolar MPPT 100/20
 * **Charging:** SAE External Port & PACO 10A Mains Charger (Backup)
 * **Monitoring:** Digital Voltmeter & Fuse Holder (16AWG)
 
@@ -103,9 +103,9 @@ The system runs as a **Single-Node Kubernetes Cluster** based on **k3s**. This e
 
 ## ⚠️ Safety Warning
 
-This project uses large energy storage (Lead-Acid/AGM batteries) and LiPo batteries.
+This project uses large energy storage (LiFePO4 batteries).
 * **Short Circuit Hazard:** A 100Ah battery can melt cables and cause fires in case of a short circuit. Fuses are mandatory!
-* **Outgassing:** AGM batteries are safe but should still not be charged in airtight containers without pressure equalization (Vent Plug installed).
+* **BMS & Monitoring:** The LiFePO4 battery has an integrated BMS, but external fusing remains mandatory. Bluetooth monitoring allows checking cell status.
 
 ## 🤝 Contributing
 

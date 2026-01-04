@@ -53,7 +53,7 @@
 ## Dimensions Checklist
 - **Pi 4**: ~88 x 58 mm
 - **SSD**: ~100 x 70 mm
-- **MPPT**: Checks specific model size (usually ~130 x 70 mm for small ones).
+- **MPPT**: Victron SmartSolar 100/20 is approx. 100 x 113 x 40mm. Check specific mount points.
 
 ## 🕳️ External Rako Box Penetrations
 

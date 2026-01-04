@@ -36,18 +36,18 @@
     *   Pi Load, Map Server busy, High Power WiFi TX, LoRa TX, LTE Active.
     *   **~13.5 Watts** (2.7A @ 5V)
 
-## Battery Runtime (100Ah AGM)
+## Battery Runtime (100Ah LiFePO4)
 
-*   **Nominal Capacity**: 100Ah @ 12V = 1200Wh
-*   **Usable Capacity (AGM)**: 50% Depth of Discharge = **600Wh**
+*   **Nominal Capacity**: 100Ah @ 12.8V = 1280Wh
+*   **Usable Capacity (LiFePO4)**: 90% Depth of Discharge = **1152Wh**
 *   **DC-DC Efficiency**: ~90% (12V to 5V conversion)
-*   **Effective Energy**: **~540Wh**
+*   **Effective Energy**: **~1036Wh**
 
 | Scenario | Power | Runtime (hrs) | Runtime (Days) |
 | :--- | :--- | :--- | :--- |
-| **Deep Sleep (4.5W)** | 4.5W | 120h | **5.0 Days** |
-| **Sentry (5.0W)** | 5.0W | 108h | **4.5 Days** |
-| **Active (13.5W)** | 13.5W | 40h | **1.6 Days** |
+| **Deep Sleep (4.5W)** | 4.5W | ~230h | **~9.5 Days** |
+| **Sentry (5.0W)** | 5.0W | ~207h | **~8.5 Days** |
+| **Active (13.5W)** | 13.5W | ~76h | **~3.2 Days** |
 
 ## Solar Replenishment (100W Panel)
 
@@ -57,5 +57,5 @@
     *   **Result**: Extends runtime by +10-20%, but **battery will deplete after ~4-5 days**.
 
 ### Recommendations
-1.  **Disable High Power WiFi** (AR9271) when not needed. It consumes ~2.5W just to be ready.
-2.  **Shutdown Strategy**: Use the **11.5V** cutoff to protect the battery cycle life.
+1.  **Disable High Power WiFi** (AR9271) when not needed.
+2.  **Shutdown Strategy**: The LiFePO4 battery's BMS protects it, but a software shutdown at ~12.0V is recommended to avoid sudden power loss.
