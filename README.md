@@ -19,9 +19,10 @@ This project documents the construction of a portable, energy-autonomous IT infr
 
 ## ✨ Features
 
-* **🔋 Energy Autonomy:** 100W foldable solar panel + 30A MPPT controller + 100Ah AGM Deep Cycle battery.
+* **🔋 Energy Autonomy:** 100W/200W foldable solar panel + 30A MPPT controller + 100Ah AGM Deep Cycle battery.
 * **📡 Off-Grid Communication:**
     * **LoRa:** Meshtastic Node (868 MHz) for communication over kilometers without mobile networks.
+    * **LTE:** 4G/Cat-1 Bridge for hybrid connectivity when mobile networks are available.
     * **WLAN:** High-Power Access Point (Atheros AR9271) for local team devices.
 * **🛡️ Edge Cluster:** Operates as a Single-Node Kubernetes Cluster (k3s) for maximum stability and "Infrastructure as Code".
 * **💾 Hardware:** Passively cooled aluminum housing ("Armor Case"), insulated Rako case, IP-certified feedthroughs.
@@ -34,7 +35,7 @@ A detailed shopping list can be found in [BOM.md](BOM.md). Here are the main com
 
 ### ⚡ Energy
 * **Battery:** 12V AGM Deep Cycle (100Ah)
-* **Solar:** 200W Foldable Panel & Victron/MPPT 30A Charge Controller
+* **Solar:** 100W/200W Foldable Panel & Victron/MPPT 30A Charge Controller
 * **Charging:** SAE External Port & PACO 10A Mains Charger (Backup)
 * **Monitoring:** Digital Voltmeter & Fuse Holder (16AWG)
 
@@ -43,6 +44,7 @@ A detailed shopping list can be found in [BOM.md](BOM.md). Here are the main com
 * **Storage:** Intenso TOP SSD (256GB, SATA III) + USB 3.0 Adapter
 * **LoRa:** Heltec WiFi LoRa 32 V3 (ESP32)
 * **WiFi:** Atheros AR9271 USB Adapter (with external antenna)
+* **LTE:** USB A7670G LTE Cat 1 Dongle (Global Bands)
 * **RTC:** DS3231 Real Time Clock (for timestamps without internet)
 
 ### 📦 Enclosure
