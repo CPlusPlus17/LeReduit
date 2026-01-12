@@ -62,7 +62,9 @@ The I2C bus allows multiple devices. They need unique addresses.
 ## 📡 Data Connections (USB)
 To avoid interference between USB 3.0 (high frequency noise) and 2.4GHz devices (though we use 868MHz/5GHz mostly), spacing matters.
 
-- **USB 3.0 (Blue)**: SSD Adapter
+- **USB 3.0 (Blue)**: 
+    - Top: SSD Adapter
+    - Bottom: Heltec LoRa V3 (RNode) - **Own SMA Antenna**
 - **USB 2.0 (Black/White)**: 
     - Top: Atheros AR9271 WiFi (External connection via extension recommended)
-    - Bottom: Heltec LoRa V3 (via USB Cable)
+    - Bottom: Heltec LoRa V3 (Meshtastic) - Shared/Main Antenna

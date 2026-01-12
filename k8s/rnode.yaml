@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rnode
+  namespace: default
+  labels:
+    app: rnode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rnode
+  template:
+    metadata:
+      labels:
+        app: rnode
+    spec:
+      containers:
+      - name: rnode
+        image: liamcottle/reticulum:latest
+        imagePullPolicy: IfNotPresent
+        # Basic command to start an interface (adjust config as needed)
+        # Using a dummy command here as the real config usually lives in .reticulum/config
+        # Ideally we mount a config map. For now, we just ensure it keeps running.
+        command: ["/bin/bash", "-c", "sleep infinity"] 
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: dev-ttyusb1
+          mountPath: /dev/ttyUSB1
+        - name: rnode-data
+          mountPath: /root/.reticulum
+      volumes:
+      - name: dev-ttyusb1
+        hostPath:
+          path: /dev/ttyUSB1
+      - name: rnode-data
+        persistentVolumeClaim:
+          claimName: rnode-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rnode
+  namespace: default
+spec:
+  selector:
+    app: rnode
+  ports:
+  - protocol: TCP
+    port: 4242
+    targetPort: 4242
+    name: rns-transport
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rnode-data-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
