@@ -1,6 +1,7 @@
 # 📐 Mechanical Layout Plan
 
-**Plate Size**: 550mm x 350mm (8mm Plywood)
+**Part Specification**: 3D Printed Modular Plate (PETG/ASA)
+**Total Size**: 550mm x 350mm (Split into segments for printing)
 **Orientation**: Horizontal (Landscape) inside Rako box.
 
 ## Design Philosophy: "Clean Deck"
@@ -26,40 +27,43 @@
   |                          (Sensor Cluster)                             |
   |                                                                       |
   |                                                  [ MAIN SWITCH ]      |
-  |                                                   (Through Plate)     |
+  |                                                   (Panel Mount)       |
   |                                                                       |
   +-----------------------------------------------------------------------+
 ```
 
 ## Drilling & Mounting Guide
 
-### 1. The "Power Zone" (Right)
-- **MPPT Controller**: Needs airflow. Mount slightly elevated or ensure space.
-- **Main Switch**: Drill 20-23mm hole (measure switch diameter!) to flush mount it into the wood, or mount it on a small 3D printed L-bracket if it's not a panel mount type.
-- **Cable Pass-throughs**: Drill 8mm or 10mm holes right next to the MPPT screw terminals for Solar In and Battery Out.
+### 1. General Mounting Strategy
+- **Material**: Printed in PETG or ASA to withstand summer temperatures inside the box.
+- **Fasteners**: Use **M2.5/M3 Heat-Set Inserts** for all component mounts. Do not use self-tapping screws directly into plastic for frequently removed parts.
+- **Segmentation**: The plate is likely printed in 2-4 sections (e.g., Dovetail or bolted joints) depending on printer volume (Voron 350 vs Prusa MK3).
 
-### 2. The "Logic Zone" (Left/Center)
-- **Raspberry Pi**: Use the M2.5 standoffs. 
-    - *Drill Template*: Place Pi, mark 4 holes.
-    - *USB*: Orientation matters! Point USB ports towards the "Cable Highway" (center or edge depending on cable length).
-- **SSD**: Velcro is best for vibration dampening.
-- **Heltec LoRa**: Mount with screen visible? Or just safely attached? If screen visible, cut a small window or mount on top.
+### 2. The "Power Zone" (Right)
+- **MPPT Controller**: Needs airflow. Mount slightly elevated.
+- **Main Switch**: The printed plate should have a pre-modeled 20-23mm hole (check datasheet) or a snap-in rectangular cutout depending on the switch type.
+- **Cable Pass-throughs**: Model these directly into the print with chamfered edges to protect cables.
 
-### 3. The "Cable Underworld" (Bottom side)
-- Use the adhesive cable clips here.
-- Run the 12V rails (Solar, Battery) along the edges to keep them away from the sensitive data lines of the Pi.
-- Twist positive and negative wires together (Twisted Pair) to reduce magnetic interference.
+### 3. The "Logic Zone" (Left/Center)
+- **Raspberry Pi**: Use M2.5 heat-set inserts.
+    - *USB*: Orientation matters! Point USB ports towards the "Cable Highway".
+- **SSD**: Velcro is best for vibration dampening, or specific 3D printed cage.
+- **Heltec LoRa**: Clip-in mount or screw mount with inserts.
+
+### 4. The "Cable Underworld" (Bottom side)
+- Integrated cable tie anchors (zip tie slots) should be part of the print design.
+- Run the 12V rails (Solar, Battery) along the edges.
 
 ## Dimensions Checklist
 - **Pi 4**: ~88 x 58 mm
 - **SSD**: ~100 x 70 mm
-- **MPPT**: Victron SmartSolar 100/20 is approx. 100 x 113 x 40mm. Check specific mount points.
+- **MPPT**: Victron SmartSolar 100/20 is approx. 100 x 113 x 40mm. Make sure to check the specific CAD model.
 
 ## 🕳️ External Rako Box Penetrations
 
 ![Le Reduit Box Render](assets/rako_box_left_flank.png)
 
-These are the drill holes required in the **grey plastic box itself** (not the wood plate).
+These are the drill holes required in the **grey plastic box itself**.
 *Caution: Ensure holes are positioned below the stacking rim and clear of the handle recesses.*
 
 ### 1. Left Flank ("Data Zone")
