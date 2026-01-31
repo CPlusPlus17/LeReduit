@@ -154,48 +154,91 @@ module full_assembly() {
     layout();
 }
 
+// --- Puzzle Config ---
+cut_gap = 0.2; // Tolerance for fit
+
+module dovetail_tab(pos, angle) {
+    // A single dovetail tab
+    // pos: [x, y] of the base center
+    // angle: 0 for X+ pointing, 90 for Y+ pointing, etc.
+    size = 12; // Width of neck
+    tip = 18;  // Width of tip
+    len = 8;   // Length of tab
+    
+    translate(pos)
+        rotate(angle)
+            polygon([
+                [0, -size/2], [len, -tip/2], 
+                [len, tip/2], [0, size/2]
+            ]);
+}
+
+module puzzle_mask_2d(q) {
+    // Generate the 2D shape for the quadrant with puzzle cuts
+    
+    x_mid = total_width / 2;
+    y_mid = total_depth / 2;
+    
+    // Base logical region logic
+    logic_rect = (q==0) ? [0, y_mid, x_mid, y_mid] : // x, y, w, h
+                 (q==1) ? [x_mid, y_mid, x_mid, y_mid] :
+                 (q==2) ? [0, 0, x_mid, y_mid] :
+                          [x_mid, 0, x_mid, y_mid];
+                          
+    offset(delta = -cut_gap) {
+        difference() {
+            union() {
+                 translate([logic_rect[0], logic_rect[1]]) square([logic_rect[2], logic_rect[3]]);
+                 
+                 // Vertical Seam Tabs (on x=x_mid)
+                 // Tabs stick from Left (Q0, Q2) into Right (Q1, Q3)
+                 if (q == 0 || q == 2) { 
+                     for(y = [40 : 40 : total_depth-40]) {
+                         if ( (q==0 && y >= y_mid) || (q==2 && y < y_mid) )
+                            dovetail_tab([x_mid, y], 0);
+                     }
+                 }
+                 
+                 // Horizontal Seam Tabs (on y=y_mid)
+                 // Tabs stick from Top (Q0, Q1) into Bottom (Q2, Q3)
+                 if (q == 0 || q == 1) {
+                     for(x = [40 : 40 : total_width-40]) {
+                         if ( (q==0 && x < x_mid) || (q==1 && x >= x_mid))
+                            dovetail_tab([x, y_mid], 270); // Pointing Down
+                     }
+                 }
+            }
+            
+            // Subtractions for sockets
+            // If I am Right side (Q1, Q3), cut holes for Left's tabs
+            if (q == 1 || q == 3) {
+                 for(y = [40 : 40 : total_depth-40]) {
+                     if ( (q==1 && y >= y_mid) || (q==3 && y < y_mid) )
+                        dovetail_tab([x_mid, y], 0);
+                 }
+            }
+            // If I am Bottom side (Q2, Q3), cut holes for Top's tabs
+            if (q == 2 || q == 3) {
+                 for(x = [40 : 40 : total_width-40]) {
+                     if ( (q==2 && x < x_mid) || (q==3 && x >= x_mid))
+                        dovetail_tab([x, y_mid], 270);
+                 }
+            }
+        }
+   }
+}
+
+
 module quadrant(q) {
     intersection() {
         full_assembly();
-        if (q == 0) { // Top Left
-             translate([0, total_depth/2, -10]) cube([total_width/2, total_depth/2, 100]);
-        } else if (q == 1) { // Top Right
-             translate([total_width/2, total_depth/2, -10]) cube([total_width/2, total_depth/2, 100]);
-        } else if (q == 2) { // Bottom Left
-             translate([0, 0, -10]) cube([total_width/2, total_depth/2, 100]);
-        } else if (q == 3) { // Bottom Right
-             translate([total_width/2, 0, -10]) cube([total_width/2, total_depth/2, 100]);
-        }
+        linear_extrude(100, center=true) puzzle_mask_2d(q);
     }
-}
-
-module joiner_strip() {
-    linear_extrude(plate_thickness)
-        difference() {
-            square([40, 12], center=true);
-            translate([10, 0]) circle(d=4);
-            translate([-10, 0]) circle(d=4);
-        }
-}
-
-module joiner_cross() {
-    linear_extrude(plate_thickness)
-        difference() {
-            square([40, 40], center=true);
-            translate([10, 10]) circle(d=4);
-            translate([-10, 10]) circle(d=4);
-            translate([10, -10]) circle(d=4);
-            translate([-10, -10]) circle(d=4);
-        }
 }
 
 // --- Main Render ---
 if (render_quadrant == -1) {
     full_assembly();
-} else if (render_quadrant == 10) {
-    joiner_strip();
-} else if (render_quadrant == 11) {
-    joiner_cross();
 } else {
     quadrant(render_quadrant);
 }
