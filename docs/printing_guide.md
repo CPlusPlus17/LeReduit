@@ -13,9 +13,24 @@ This guide describes how to manufacture the internal mounting platform using 3D 
 *   **Warning**: If the Rako box sits in direct blistering sunlight, internal temps *might* soften PETG under load. For shaded deployment, it is fine.
 
 ### ⛔️ Avoid: PLA (Polylactic Acid)
-*   **Why**: Softens at ~55-60°C. A closed black box in the sun will exceed this. Your platform will warp and fail.
+*   **Why**: Softens at ~55-60°C. A closed black box in the sun will exceed this. Your platform **and your printed cases** will warp and fail.
+*   **Verdict**: Do not use PLA for *anything* inside the box.
 
-## 📐 Segmentation & Printing Strategy
+## 🧵 Component Specifics (Cases/Mounts)
+*   **Recommended**: **ASA** (Matches the plate, highest heat resistance).
+*   **Acceptable**: **PETG** (Good for small parts, snap-fits are durable).
+
+## � Adhesives & Fasteners
+
+For components mounted with **Velcro** (like the SSD or Heltec Case), you must be careful about thermal failure.
+
+### ⚠️ Warning: Adhesive Creep
+*   Inside a black Rako box in the sun, temperatures can hit **60°C+**.
+*   **Standard Velcro Adhesive**: Will soften and slide ("creep") or detach completely.
+*   **Solution**: Use **3M Dual Lock (High Temp)** or **Velcro Industrial Strength (High Heat)**. Look for ratings above 90°C.
+
+
+## �📐 Segmentation & Printing Strategy
 
 The total size is **550mm x 350mm**, which exceeds most hobbyist build volumes.
 
@@ -36,7 +51,26 @@ The total size is **550mm x 350mm**, which exceeds most hobbyist build volumes.
 *   **Infill**: 20-30% Grid or Gyroid (Structural rigidity).
 *   **Supports**: Minimal. Design should be chamfered to avoid supports.
 
-## 🔧 Post-Processing
+## �️ Printer-Specific Tips
+
+### Bambu Lab (P1S / X1C)
+*   **PETG**:
+    *   **Plate**: Use **Textured PEI Plate**. *Warning: PETG can fuse permanently to smooth PEI or Cool Plates without glue stick.*
+    *   **Door**: Keep closed to avoid warping nearby drafts, but ensure chamber fan is on (default profile handles this).
+*   **ASA**:
+    *   **Plate**: Textured or Smooth PEI (with glue).
+    *   **Enclosure**: **Keep CLOSED**. ASA needs a warm chamber (~40-50°C) to prevent warping and layer splitting. Pre-heat the chamber by running the bed at 100°C for 10-15 mins before starting if printing large parts.
+    *   **Brim**: **Highly Recommended** (5-10mm) for large flat parts like the mounting plate to prevent corners from lifting.
+    *   **Ventilation & Fumes**: ASA releases **Styrene** (smells like burning plastic).
+        *   **Standard**: Open a window.
+        *   **Basement/Enclosed**: Use an **Activated Carbon Filter**. The P1S has a small one, but it's often not enough.
+        *   **Upgrade**: Look into printing a **"BentoBox"** (internal recirculating carbon filter).
+        *   **Upgrade**: Look into printing a **"BentoBox"** (internal recirculating carbon filter).
+            *   *Search*: **"BentoBox V2.0"** by **thrutheframe** on **MakerWorld** or **Printables**.
+            *   *Note*: Requires 5015 fans and Acid-Free Activated Carbon pellets.
+        *   **Grow Tent**: If you have one, **use it**. It is perfect for containing fumes and keeping the printer warm. Just unzip it after the smell settles.
+
+## �🔧 Post-Processing
 
 ### Heat-Set Inserts
 *   The design relies on **M2.5 and M3 Heat-Set Inserts** (Short type).

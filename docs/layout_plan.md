@@ -48,7 +48,10 @@
 - **Raspberry Pi**: Use M2.5 heat-set inserts.
     - *USB*: Orientation matters! Point USB ports towards the "Cable Highway".
 - **SSD**: Velcro is best for vibration dampening, or specific 3D printed cage.
-- **Heltec LoRa**: Clip-in mount or screw mount with inserts.
+- **Heltec LoRa**:
+    - **Mounting**: **3D Printed Case** attached via **High-Temp Velcro / 3M Dual Lock**.
+    - *Why*: Allows rapid field replacement of the unit without tools.
+    - *Note*: Do not use standard sticky tape; use heat-resistant adhesive pads.
 
 ### 4. The "Cable Underworld" (Bottom side)
 - Integrated cable tie anchors (zip tie slots) should be part of the print design.
